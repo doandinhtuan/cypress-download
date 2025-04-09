@@ -1,14 +1,20 @@
-describe("login one time ", () => {
+describe("Tách mỗi setId thành 1 test riêng", () => {
+  let listId = [];
   beforeEach(() => {
     cy.login("dinhbinhkhanv@gmail.com", "merci2024");
+    cy.readFile('cypress/fixtures/setId.txt', 'utf8').then((content) => {
+      listId = content
+        .split('\n')
+        .map(line => line.trim())
+        .filter(Boolean);
+    });
   });
-  let listId = [
-    "P-SS-202412292479",
-    "P-SS-202412292480",
-  ];
+  it('load xong dữ liệu', () => {
+    expect(listId.length).to.be.greaterThan(0);
+  });
 
   listId.forEach((setId) => {
-    it("Search Set ID", () => {
+    it(`search Set ID: ${setId}`, () => {
       cy.visit("https://openframe.inc/bpo/requests");
       cy.get("input[name=q]").type(setId);
       cy.get("form#requestFilterForm").within(() => {
