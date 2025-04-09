@@ -1,0 +1,6 @@
+lay danh_sach_thu_muc:
+
+dir /ad /b > danh_sach_thu_muc.txt
+
+power shell: lay danh sach ten thu muc
+  Get-ChildItem -Directory | Select-Object -ExpandProperty Name > danh_sach_thu_muc.txt
