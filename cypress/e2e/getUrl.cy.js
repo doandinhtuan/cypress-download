@@ -1,22 +1,12 @@
-describe('Tạo test riêng cho mỗi setId từ file', () => {
-  let listId = [];
+const listId = ["P-SS-20241229001", "P-SS-20241229002"];
+
+describe('Lấy list Url ', () => {
   beforeEach(() => {
     cy.login("dinhbinhkhanv@gmail.com", "merci2024");
-    cy.task('readSetIds').then((ids) => {
-      listId = ids;
-    });
   });
 
-  it(`Lấy Url cho các SetId`, () => {
-    expect(listId.length).to.be.greaterThan(0);
-    cy.log('Total: ', listId.length)
-  });
-
-  // Không thể dùng listId.forEach(...) trực tiếp ở đây vì async
-  // Ta sẽ chạy tất cả trong 1 vòng lặp bên trong `it()` duy nhất:
-  it('chạy tất cả test cho từng setId', () => {
-    listId.forEach((setId) => {
-      cy.log(`🔍 Xử lý Set ID: ${setId}`);
+  listId.forEach((setId) => {
+    it(`Đang xử lý cho set id ${setId}`, () => {
       cy.visit("https://openframe.inc/bpo/requests");
       cy.get("input[name=q]").type(setId);
       cy.get("form#requestFilterForm").within(() => {
