@@ -5,8 +5,10 @@ describe('Lấy list Url ', () => {
     cy.login("dinhbinhkhanv@gmail.com", "merci2024");
   });
 
+  // cách duy nhất để có thể chạy nhiều test case trong vòng forEach là khai báo listId trực tiếp trong file 
+  // Cypress sẽ không chờ để gọi một hàm readfile hay task.. xong mới tạo it()
   listId.forEach((setId) => {
-    it(`Đang xử lý cho set id ${setId}`, () => {
+    it(`Get Url cho set id ${setId}`, () => {
       cy.visit("https://openframe.inc/bpo/requests");
       cy.get("input[name=q]").type(setId);
       cy.get("form#requestFilterForm").within(() => {
