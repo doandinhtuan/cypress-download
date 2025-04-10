@@ -17,38 +17,36 @@ describe('Lấy list Url ', () => {
       let foundIndex = -1;
       let found = false;
 
-      cy.get("tbody tr")
-        .each(($tr, index) => {
-          if (found) return false;
+      cy.get("tbody tr").each(($tr, index) => {
+        if (found) return false;
 
-          cy.wrap($tr).within(() => {
-            cy.get("td.text-nowrap").each(($td) => {
-              const text = $td.text().trim();
-              if (text === setId) {
-                foundIndex = index;
-                found = true;
-                return false;
-              }
-            });
+        cy.wrap($tr).within(() => {
+          cy.get("td.text-nowrap").each(($td) => {
+            const text = $td.text().trim();
+            if (text === setId) {
+              foundIndex = index;
+              found = true;
+              return false;
+            }
           });
-        })
-        .then(() => {
-          if (foundIndex !== -1) {
-            cy.get(`tbody tr:eq(${foundIndex})`).within(() => {
-              cy.get("select[name=bpo_id]").select("Đinh Bỉnh Khang", { force: true });
-              cy.get("button[type=submit]").click();
-              cy.get("a").contains("View").click();
-            });
-
-            cy.wait(500);
-            cy.get("table tr:first td:first").then(($row) => {
-              const text = $row.text().trim();
-              expect(text).to.equal(setId);
-            });
-          } else {
-            cy.log(`❌ Không tìm thấy ${setId}`);
-          }
         });
+      }).then(() => {
+        if (foundIndex !== -1) {
+          cy.get(`tbody tr:eq(${foundIndex})`).within(() => {
+            cy.get("select[name=bpo_id]").select("Đinh Bỉnh Khang", { force: true });
+            cy.get("button[type=submit]").click();
+            cy.get("a").contains("View").click();
+          });
+
+          cy.wait(500);
+          cy.get("table tr:first td:first").then(($row) => {
+            const text = $row.text().trim();
+            expect(text).to.equal(setId);
+          });
+        } else {
+          cy.log(`❌ Không tìm thấy ${setId}`);
+        }
+      });
 
       cy.location().then((loc) => {
         cy.writeFile("cypress/downloads/listUrl.txt", loc.href + "\n", {
@@ -56,6 +54,7 @@ describe('Lấy list Url ', () => {
           flag: "a+",
         });
       });
+      
     });
   });
 });
